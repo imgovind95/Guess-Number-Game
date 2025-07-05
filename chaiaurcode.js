@@ -11,6 +11,7 @@ const guessSlot = document.querySelector('.guesses');
 const remaining = document.querySelector('.lastResult');
 const lowOrHi = document.querySelector('.lowOrHi');
 const startOver = document.querySelector('.resultParas');
+const gameStatus = document.getElementById('gameStatus');
 const p = document.createElement('p');
 
 let prevGuess = [];
@@ -80,6 +81,7 @@ startBtn.addEventListener('click', () => {
   guessSlot.innerHTML = '';
   remaining.innerHTML = '10';
   lowOrHi.innerHTML = '';
+  gameStatus.innerText = `🎮 Game Started! Guess a number between ${minRange} and ${maxRange}`;
   playGame = true;
 });
 
@@ -139,6 +141,7 @@ function endGame() {
   p.classList.add('button');
   p.innerHTML = `<h2 id="newGame">Start New Game</h2>`;
   startOver.appendChild(p);
+  gameStatus.innerText = '❌ Game Over.';
   playGame = false;
   newGame();
 }
@@ -151,6 +154,7 @@ function newGame() {
     lowOrHi.innerHTML = '';
     userInput.setAttribute('disabled', '');
     submit.setAttribute('disabled', '');
+    gameStatus.innerText = '';
     prevGuess = [];
     numGuess = 1;
     playGame = false;
