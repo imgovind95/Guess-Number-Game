@@ -1,5 +1,5 @@
 let randomNumber;
-let minRange = 1;
+let minRange = 0;
 let maxRange = 10;
 
 const minSelect = document.getElementById('minSelect');
@@ -17,42 +17,50 @@ let prevGuess = [];
 let numGuess = 1;
 let playGame = false;
 
-
+// Populate min dropdown (0 to 100 in steps of 5)
 function populateMinSelect() {
   minSelect.innerHTML = '';
-  for (let i = 0; i <= parseInt(Math.random()*100+100); i+=5) {
+  for (let i = 0; i <= 100; i += 5) {
     minSelect.innerHTML += `<option value="${i}">${i}</option>`;
   }
 }
 
-
-function populateMaxSelect(minVal) {
+// Populate max dropdown based on min (min + 10 to 1000 in steps of 10)
+function populateMaxSelect(minVal = 0) {
   maxSelect.innerHTML = '';
-  for (let i = 1; i <= parseInt(Math.random()*1000+1000); i+=10) {
+  for (let i = minVal + 10; i <= 1000; i += 10) {
     maxSelect.innerHTML += `<option value="${i}">${i}</option>`;
   }
 }
 
-
+// Initial population
 populateMinSelect();
-populateMaxSelect(1);
+populateMaxSelect(0);
 
-
+// Update max when min changes
 minSelect.addEventListener('change', () => {
-  const minVal = minSelect.value;
+  const minVal = parseInt(minSelect.value);
   populateMaxSelect(minVal);
 });
 
-
+// Update min when max changes, preserving selected min if still valid
 maxSelect.addEventListener('change', () => {
-  const maxVal = maxSelect.value;
+  const maxVal = parseInt(maxSelect.value);
+  const currentMin = parseInt(minSelect.value);
+
   minSelect.innerHTML = '';
-  for (let i = 1; i < parseInt(maxVal); i++) {
+  for (let i = 0; i < maxVal; i += 5) {
     minSelect.innerHTML += `<option value="${i}">${i}</option>`;
+  }
+
+  if (currentMin < maxVal) {
+    minSelect.value = currentMin;
+  } else {
+    minSelect.value = 0;
   }
 });
 
-
+// Start Game
 startBtn.addEventListener('click', () => {
   minRange = parseInt(minSelect.value);
   maxRange = parseInt(maxSelect.value);
@@ -75,7 +83,7 @@ startBtn.addEventListener('click', () => {
   playGame = true;
 });
 
-
+// Submit guess
 submit.addEventListener('click', function (e) {
   e.preventDefault();
   if (!playGame) return;
