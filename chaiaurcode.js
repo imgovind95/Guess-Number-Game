@@ -141,7 +141,7 @@ function endGame() {
   p.classList.add('button');
   p.innerHTML = `<h2 id="newGame">Start New Game</h2>`;
   startOver.appendChild(p);
-  gameStatus.innerText = '❌ Game Over.';
+  gameStatus.innerText = ' Game Over.';
   playGame = false;
   newGame();
 }
